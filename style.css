@@ -1,7 +1,59 @@
 * {
-  background: red;
+  /*outline: 1px dashed red;*/
+}
+
+h1 {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-family: 'Slabo 27px', serif;
+}
+
+h2 {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 50px;
+  font-family: 'Dosis', sans-serif;
+}
+
+#images {
+  width: 960px;
+  margin: 0px auto;
+}
+
+#image_one {
+  margin-right: 10px;
+  margin-left: 0;
+}
+
+#image_three {
+  margin-left: 10px;
+  margin-right: 0;
 }
 
 img {
   width: 300px;
+  height: 300px;
+  border: 5px solid black;
+  transition: 350ms all;
+  cursor: pointer;
+}
+
+img:hover {
+  border-color: #7FFF00;
+}
+
+ul {
+  width: 960px;
+  margin: 0px auto;
+  line-height: 30px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+li {
+  display: inline-block;
+  font-size: 20px;
 }
