@@ -1,4 +1,4 @@
-#User Stories
+# User Stories
 - As the marketing research team, I want to see the number of times an image is clicked and showed on the page in order to make essential marketing decisions.
 
 - As a developer, I want to build a program that selects three random photos from the image directory and display them side-by-side-by-side in the browser window so that users can choose between the photos.
