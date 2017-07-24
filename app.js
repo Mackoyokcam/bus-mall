@@ -35,7 +35,10 @@ for (var i = 0; i < GenerateImage.names.length; i++) {
   new GenerateImage(GenerateImage.names[i]);
 }
 
+// Handles clicking of images
 function handleClick(e) {
+
+  // Run this code only if there was an event
   if (e) {
     GenerateImage.currentClicks++;
     for (var i = 0; i < GenerateImage.all.length; i++) {
@@ -50,11 +53,29 @@ function handleClick(e) {
   // End if max clicks
   if (GenerateImage.currentClicks >= 25) {
     //Disable Event Listeners
-    //Display Table
-    alert('25 clicks: ' + GenerateImage.currentClicks);
+    for (i = 0; i < GenerateImage.imgElements.length; i++) {
+      document.getElementById(GenerateImage.imgElements[i]).removeEventListener('click', handleClick);
+      document.getElementById(GenerateImage.imgElements[i]).style.borderColor = 'black';
+      document.getElementById(GenerateImage.imgElements[i]).style.cursor = 'default';
+    }
+    //Display Data
+    for (i = 0; i < GenerateImage.all.length; i++) {
+      var percentage = Math.round((GenerateImage.all[i].clicked / GenerateImage.all[i].viewed) * 100);
+      if(GenerateImage.all[i].viewed === 0) {
+        percentage = 0;
+      }
+      var liElement = document.createElement('li');
+      liElement.textContent = GenerateImage.all[i].name + ' has been viewed ' +
+        GenerateImage.all[i].viewed + ' times and has been clicked ' +
+        GenerateImage.all[i].clicked + ' times.' + '(' + percentage + '%)';
+      document.getElementById('results').appendChild(liElement);
+    }
+
+    alert('You have completed the focus group! Please see results.');
     return true;
   }
 
+  // Display new images and collect data
   for (i = 0; i < GenerateImage.numberOfPicturesDisplayed; i++) {
     var random_number = Math.floor(Math.random() * GenerateImage.all.length);
 
@@ -83,8 +104,8 @@ function handleClick(e) {
   }
 }
 
-document.getElementById('image_one').addEventListener('click', handleClick);
-document.getElementById('image_two').addEventListener('click', handleClick);
-document.getElementById('image_three').addEventListener('click', handleClick);
+for (i = 0; i < GenerateImage.imgElements.length; i++) {
+  document.getElementById(GenerateImage.imgElements[i]).addEventListener('click', handleClick);
+}
 
 handleClick(false);
