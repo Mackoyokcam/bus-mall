@@ -15,13 +15,24 @@ function GenerateImage(name) {
   GenerateImage.all.push(this);
 }
 
-GenerateImage.numberOfPicturesDisplayed = 3;
+GenerateImage.numberOfPicturesDisplayed = 6;
 
 GenerateImage.maxClicks = 25;
 
 GenerateImage.currentClicks = 0;
 
-GenerateImage.imgElements = ['image_one', 'image_two', 'image_three'];
+GenerateImage.imgElements = [];
+
+GenerateImage.createImgElements = function () {
+  var imageContainer = document.getElementById('images');
+  for(var i = 1; i < GenerateImage.numberOfPicturesDisplayed + 1; i++) {
+    var imageElement = document.createElement('img');
+    imageElement.id = 'image' + i;
+    imageElement.src = '';
+    imageContainer.appendChild(imageElement);
+    GenerateImage.imgElements.push(imageElement.id);
+  }
+}();
 
 GenerateImage.indicesUsed = [];
 
@@ -31,6 +42,7 @@ GenerateImage.names = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubbl
 
 GenerateImage.all = [];
 
+// Create image objects
 for (var i = 0; i < GenerateImage.names.length; i++) {
   new GenerateImage(GenerateImage.names[i]);
 }
@@ -97,10 +109,10 @@ function handleClick(e) {
   }
 
   if (e) {
-    // Can now reuse the previous three images
-    GenerateImage.indicesUsed.shift();
-    GenerateImage.indicesUsed.shift();
-    GenerateImage.indicesUsed.shift();
+    // Can now reuse the previous images
+    for(i = 0; i < GenerateImage.numberOfPicturesDisplayed; i++) {
+      GenerateImage.indicesUsed.shift();
+    }
   }
 }
 
