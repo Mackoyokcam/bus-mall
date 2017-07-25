@@ -22,7 +22,7 @@ h2 {
   margin: 0px auto;
 }
 
-#image_one {
+/*#image_one {
   margin-right: 10px;
   margin-left: 0;
 }
@@ -30,7 +30,7 @@ h2 {
 #image_three {
   margin-left: 10px;
   margin-right: 0;
-}
+}*/
 
 img {
   width: 300px;
@@ -38,6 +38,8 @@ img {
   border: 5px solid black;
   transition: 350ms all;
   cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 img:hover {
