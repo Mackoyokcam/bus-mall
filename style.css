@@ -65,10 +65,19 @@ canvas {
     display: block;
 }
 
-#bar_graph {
+#chart_area {
   margin-bottom: 100px;
 }
 
-#polar_area {
-  margin-bottom: 100px;
+#buttons {
+  width: 960px;
+  margin: 0px auto;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+button {
+  width: 100px;
+  height: 50px;
 }

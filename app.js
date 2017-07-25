@@ -18,7 +18,7 @@ function GenerateImage(name) {
 // Must be less than half the amount of images in img directory
 GenerateImage.numberOfPicturesDisplayed = 3;
 
-GenerateImage.maxClicks = 25;
+GenerateImage.maxClicks = 5;
 
 GenerateImage.currentClicks = 0;
 
@@ -45,6 +45,19 @@ GenerateImage.all = [];
 
 var barData = [];
 var percentages = [];
+var colors = randomColor({
+  count: 20});
+
+function newCanvas() {
+  var body = document.getElementById('body');
+  var oldCanvas = document.getElementById('chart_area');
+  body.removeChild(oldCanvas);
+  var newCanvas = document.createElement('canvas');
+  newCanvas.id = 'chart_area';
+  newCanvas.width = '960';
+  newCanvas.height = '700';
+  body.appendChild(newCanvas);
+}
 
 // Create image objects
 for (var i = 0; i < GenerateImage.names.length; i++) {
@@ -94,12 +107,26 @@ function handleClick(e) {
     deleteImages.removeChild(document.getElementById('h2'));
 
     //Add charts with headers
-    var barHeader = document.getElementById('bar_header');
-    barHeader.textContent = 'Number of votes per item.';
-    var polarHeader = document.getElementById('polar_header');
-    polarHeader.textContent = 'Percentages based on views and votes';
+    // var barHeader = document.getElementById('bar_header');
+    // barHeader.textContent = 'Number of votes per item.';
+    // var polarHeader = document.getElementById('polar_header');
+    // polarHeader.textContent = 'Percentages based on views and votes';
+    // buttons
+    var voteButtonElement = document.createElement('button');
+    var percentButtonElement = document.createElement('button');
+    voteButtonElement.id = 'vote_button';
+    percentButtonElement.id = 'percent_button';
+    voteButtonElement.textContent = 'Votes bar graph';
+    percentButtonElement.textContent = 'Percentage graph';
+    var buttonContainer = document.getElementById('buttons');
+    buttonContainer.appendChild(voteButtonElement);
+    buttonContainer.appendChild(percentButtonElement);
+
+    // add event listeners to buttons
+    voteButtonElement.addEventListener('click', drawBarGraph);
+    percentButtonElement.addEventListener('click', drawPolarArea);
+
     drawBarGraph();
-    drawPolarArea();
     return true;
   }
 
@@ -139,7 +166,21 @@ for (i = 0; i < GenerateImage.imgElements.length; i++) {
 handleClick(false);
 
 function drawBarGraph() {
-  var ctx = document.getElementById('bar_graph').getContext('2d');
+  var voteButtonElement = document.getElementById('vote_button');
+  var percentButtonElement = document.getElementById('percent_button');
+
+  // Disable/Reenable buttons
+  voteButtonElement.disabled = true;
+  voteButtonElement.style.opacity = 0.4;
+  percentButtonElement.disabled = false;
+  percentButtonElement.style.opacity = 1;
+
+  // clear canvas
+  newCanvas();
+
+  var canvas = document.getElementById('chart_area');
+  var ctx = document.getElementById('chart_area').getContext('2d');
+
   var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
@@ -147,8 +188,7 @@ function drawBarGraph() {
       datasets: [{
         label: 'Number of Votes',
         data: barData,
-        backgroundColor: randomColor({
-          count: 20}),
+        backgroundColor: colors
       }]
     },
     options: {
@@ -161,7 +201,7 @@ function drawBarGraph() {
       },
       responsive: false,
       animation: {
-        duration: 1000,
+        duration: 2000,
         easing: 'easeOutBounce'
       }
     }
@@ -169,21 +209,36 @@ function drawBarGraph() {
 }
 
 function drawPolarArea() {
-  var ctx = document.getElementById('polar_area').getContext('2d');
-  myPolar = new Chart(ctx,{
-    type: 'polarArea',
+  var percentButtonElement = document.getElementById('percent_button');
+  var voteButtonElement = document.getElementById('vote_button');
+
+  // Disable/Reenable buttons
+  percentButtonElement.disabled = true;
+  percentButtonElement.style.opacity = 0.4;
+  voteButtonElement.disabled = false;
+  voteButtonElement.style.opacity = 1;
+
+  // clear canvas
+  newCanvas();
+
+  var canvas = document.getElementById('chart_area');
+  var ctx = document.getElementById('chart_area').getContext('2d');
+
+  // Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  var myPolar = new Chart(ctx,{
+    type: 'doughnut',
     data: {
       labels: GenerateImage.names, // titles array we declared earlier
       datasets: [{
         data: percentages, // votes array we declared earlier
-        backgroundColor: randomColor({
-          count: 20})
+        backgroundColor: colors
       }]
     },
     options: {
       responsive: false,
       animation: {
-        duration: 1000,
+        duration: 2000,
         easing: 'easeOutBounce'
       }
     },
@@ -197,5 +252,4 @@ function drawPolarArea() {
       }]
     }
   });
-  chartDrawn = true;
 }
