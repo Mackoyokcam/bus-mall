@@ -17,20 +17,18 @@ h2 {
   font-family: 'Dosis', sans-serif;
 }
 
+h3 {
+  text-align: center;
+  font-family: 'Dosis', sans-serif;
+  font-size: 30px;
+  margin-top: 100px;
+  margin-bottom: 50px;
+}
+
 #images {
   width: 960px;
   margin: 0px auto;
 }
-
-/*#image_one {
-  margin-right: 10px;
-  margin-left: 0;
-}
-
-#image_three {
-  margin-left: 10px;
-  margin-right: 0;
-}*/
 
 img {
   width: 300px;
@@ -58,4 +56,19 @@ ul {
 li {
   display: inline-block;
   font-size: 20px;
+}
+
+canvas {
+    /*border: 2px solid black;*/
+    padding: 0;
+    margin: auto;
+    display: block;
+}
+
+#bar_graph {
+  margin-bottom: 100px;
+}
+
+#polar_area {
+  margin-bottom: 100px;
 }
