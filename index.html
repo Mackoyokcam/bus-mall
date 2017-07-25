@@ -7,13 +7,17 @@
     <link href="style.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
+    <script src="randomColor.js"></script>
   </head>
-  <body>
+  <body id="body">
     <h1>Bus-Mall Focus Group</h1>
-    <h2>Please select the image you would purchase over the others:</h2>
+    <h2 id="h2">Please select the image you would purchase over the others:</h2>
     <div id="images">
     </div>
-    <ul id="results"></ul>
+    <div id="buttons"></div>
+    <!-- <ul id="results"></ul>  Obsolete-->
+    <canvas id="chart_area" width="960" height="700"></canvas>
     <script src="app.js"></script>
   </body>
 </html>
