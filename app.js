@@ -18,7 +18,7 @@ function GenerateImage(name) {
 // Must be less than half the amount of images in img directory
 GenerateImage.numberOfPicturesDisplayed = 3;
 
-GenerateImage.maxClicks = 5;
+GenerateImage.maxClicks = 25;
 
 GenerateImage.currentClicks = 0;
 
@@ -178,7 +178,6 @@ function drawBarGraph() {
   // clear canvas
   newCanvas();
 
-  var canvas = document.getElementById('chart_area');
   var ctx = document.getElementById('chart_area').getContext('2d');
 
   var myChart = new Chart(ctx, {
@@ -221,11 +220,9 @@ function drawPolarArea() {
   // clear canvas
   newCanvas();
 
-  var canvas = document.getElementById('chart_area');
   var ctx = document.getElementById('chart_area').getContext('2d');
 
   // Clear the canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
   var myPolar = new Chart(ctx,{
     type: 'doughnut',
     data: {
