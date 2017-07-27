@@ -17,6 +17,7 @@ if (supports_html5_storage()) {
 
 function GenerateImage(name) {
   this.name = name;
+  this.capitalName = name.charAt(0).toUpperCase() + name.slice(1);
   if (name === 'usb') {
     this.ext = '.gif';
   } else if (name === 'sweep') {
@@ -30,10 +31,10 @@ function GenerateImage(name) {
   GenerateImage.all.push(this);
 }
 
-// Must be less than half the amount of images in img directory
+// Must be less than or equal to half the amount of images in img directory
 GenerateImage.numberOfPicturesDisplayed = 3;
 
-GenerateImage.maxClicks = 5;
+GenerateImage.maxClicks = 25;
 
 GenerateImage.currentClicks = 0;
 
@@ -229,7 +230,7 @@ function drawBarGraph() {
       scales: {
         yAxes: [{
           ticks: {
-            beginAtZero:true
+            beginAtZero: true
           }
         }]
       },
