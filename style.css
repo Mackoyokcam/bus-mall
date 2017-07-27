@@ -81,3 +81,9 @@ button {
   width: 100px;
   height: 50px;
 }
+
+#table_link {
+  margin-top: 20px;
+  font-size: 30px;
+  color: red;
+}

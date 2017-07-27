@@ -1,7 +1,23 @@
 'use strict';
 
+function supports_html5_storage() {
+  try {
+    return 'localStorage' in window && window['localStorage'] !== null;
+  } catch (e) {
+    return false;
+  }
+}
+
+// Check if browser supports local storage
+if (supports_html5_storage()) {
+  console.log('Local storage supported!');
+} else {
+  console.log('Local storage not supported :(');
+}
+
 function GenerateImage(name) {
   this.name = name;
+  this.capitalName = name.charAt(0).toUpperCase() + name.slice(1);
   if (name === 'usb') {
     this.ext = '.gif';
   } else if (name === 'sweep') {
@@ -15,7 +31,7 @@ function GenerateImage(name) {
   GenerateImage.all.push(this);
 }
 
-// Must be less than half the amount of images in img directory
+// Must be less than or equal to half the amount of images in img directory
 GenerateImage.numberOfPicturesDisplayed = 3;
 
 GenerateImage.maxClicks = 25;
@@ -43,8 +59,8 @@ GenerateImage.names = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubbl
 
 GenerateImage.all = [];
 
-var barData = [];
 var percentages = [];
+var barData = [];
 var colors = randomColor({
   count: 20});
 
@@ -59,10 +75,20 @@ function newCanvas() {
   body.appendChild(newCanvas);
 }
 
-// Create image objects
-for (var i = 0; i < GenerateImage.names.length; i++) {
-  new GenerateImage(GenerateImage.names[i]);
-  barData[i] = 0;
+// See if there is data in local storage
+if (localStorage.storedAll) {
+  console.log('There is data in local storage. Loading data...');
+  GenerateImage.all = JSON.parse(localStorage.storedAll);
+
+} else {
+  console.log('No data in local storage. Initializing app...');
+
+  // Initialize
+  // Create image objects
+  for (var i = 0; i < GenerateImage.names.length; i++) {
+    new GenerateImage(GenerateImage.names[i]);
+    barData[i] = 0;
+  }
 }
 
 // Handles clicking of images
@@ -74,10 +100,10 @@ function handleClick(e) {
     for (var i = 0; i < GenerateImage.all.length; i++) {
       if (e.target.alt === GenerateImage.all[i].name) {
         GenerateImage.all[i].clicked++;
-        barData[i] = GenerateImage.all[i].clicked;
         console.log('User clicked: ' + GenerateImage.all[i].name);
         i = GenerateImage.all.length;
       }
+      localStorage.storedAll = JSON.stringify(GenerateImage.all);
     }
   }
 
@@ -95,7 +121,7 @@ function handleClick(e) {
       if(GenerateImage.all[i].viewed === 0) {
         percentage = 0;
       }
-
+      barData[i] = GenerateImage.all[i].clicked;
       percentages.push(percentage);
     }
 
@@ -114,6 +140,11 @@ function handleClick(e) {
     // buttons
     var voteButtonElement = document.createElement('button');
     var percentButtonElement = document.createElement('button');
+    var pElement = document.createElement('p');
+    pElement.innerHTML = 'Pretty useless graph huh? <br> click <a href="table.html">here</a> instead' +
+      ' to see this in table form.';
+    pElement.id = 'table_link';
+    pElement.style.visibility = 'hidden';
     voteButtonElement.id = 'vote_button';
     percentButtonElement.id = 'percent_button';
     voteButtonElement.textContent = 'Votes bar graph';
@@ -121,6 +152,7 @@ function handleClick(e) {
     var buttonContainer = document.getElementById('buttons');
     buttonContainer.appendChild(voteButtonElement);
     buttonContainer.appendChild(percentButtonElement);
+    buttonContainer.appendChild(pElement);
 
     // add event listeners to buttons
     voteButtonElement.addEventListener('click', drawBarGraph);
@@ -169,6 +201,10 @@ function drawBarGraph() {
   var voteButtonElement = document.getElementById('vote_button');
   var percentButtonElement = document.getElementById('percent_button');
 
+  // Remove table link to another page.
+  var pElement = document.getElementById('table_link');
+  pElement.style.visibility = 'hidden';
+
   // Disable/Reenable buttons
   voteButtonElement.disabled = true;
   voteButtonElement.style.opacity = 0.4;
@@ -180,7 +216,7 @@ function drawBarGraph() {
 
   var ctx = document.getElementById('chart_area').getContext('2d');
 
-  var myChart = new Chart(ctx, {
+  new Chart(ctx, {
     type: 'horizontalBar',
     data: {
       labels: GenerateImage.names,
@@ -194,7 +230,7 @@ function drawBarGraph() {
       scales: {
         yAxes: [{
           ticks: {
-            beginAtZero:true
+            beginAtZero: true
           }
         }]
       },
@@ -211,6 +247,10 @@ function drawPolarArea() {
   var percentButtonElement = document.getElementById('percent_button');
   var voteButtonElement = document.getElementById('vote_button');
 
+  // Create table link to another page
+  var pElement = document.getElementById('table_link');
+  pElement.style.visibility = 'visible';
+
   // Disable/Reenable buttons
   percentButtonElement.disabled = true;
   percentButtonElement.style.opacity = 0.4;
@@ -223,7 +263,7 @@ function drawPolarArea() {
   var ctx = document.getElementById('chart_area').getContext('2d');
 
   // Clear the canvas
-  var myPolar = new Chart(ctx,{
+  new Chart(ctx,{
     type: 'doughnut',
     data: {
       labels: GenerateImage.names, // titles array we declared earlier
